@@ -55,7 +55,7 @@ export abstract class SchematicCommand extends Command {
 
   protected readonly coreOptions: Option[] = [
     {
-      name: 'dryRun',
+      name: 'dry-run',
       type: Boolean,
       default: false,
       aliases: ['d'],
