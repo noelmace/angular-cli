@@ -2,23 +2,27 @@
 
 1. Clone the Angular-CLI repo. A local copy works just fine.
 1. Create an upstream remote:
-  ```bash
-  $ git remote add upstream https://github.com/angular/angular-cli.git
-  ```
+
+```bash
+$ git remote add upstream https://github.com/angular/angular-cli.git
+```
 
 # Caretaker
 
 The caretaker should triage issues, merge PR, and sheppard the release.
 
-Caretaker calendar can be found [here](https://calendar.google.com/calendar?cid=Z29vZ2xlLmNvbV9zZjlvODF0NGE4NzE5ZmtiMnBoZnA4MGk2Z0Bncm91cC5jYWxlbmRhci5nb29nbGUuY29t).
+Caretaker calendar can be found
+[here](https://calendar.google.com/calendar?cid=Z29vZ2xlLmNvbV9zZjlvODF0NGE4NzE5ZmtiMnBoZnA4MGk2Z0Bncm91cC5jYWxlbmRhci5nb29nbGUuY29t).
 
 ## Triaging Issues
+
 TBD
 
 ## Merging PRs
 
-The list of PRs which are currently ready to merge (approved with passing status checks) can
-be found with [this search](https://github.com/angular/angular-cli/pulls?q=is%3Apr+is%3Aopen+label%3A%22PR+action%3A+merge%22+-is%3Adraft).
+The list of PRs which are currently ready to merge (approved with passing status
+checks) can be found with
+[this search](https://github.com/angular/angular-cli/pulls?q=is%3Apr+is%3Aopen+label%3A%22PR+action%3A+merge%22+-is%3Adraft).
 This list should be checked daily and any ready PRs should be merged. For each
 PR, check the `PR target` label to understand where it should be merged to. If
 `master` is targetted, then click "Rebase and Merge". If the PR also targets a
@@ -45,11 +49,13 @@ Say the following PR is merged;
 * refactor(@angular-devkit/core): move stuff to new feature
 ```
 
-Only the first 2 commits should be cherry picked to the patch branch, as the last 3 are related to a new feature.
+Only the first 2 commits should be cherry picked to the patch branch, as the
+last 3 are related to a new feature.
 
-Cherry picking is done by checking out the patch branch and cherry picking the new commit onto it.
-The patch branch is simply named as a version number, with a X in the relevant spot, such as `9.0.x`.
-This should be done after merging to master.
+Cherry picking is done by checking out the patch branch and cherry picking the
+new commit onto it. The patch branch is simply named as a version number, with a
+X in the relevant spot, such as `9.0.x`. This should be done after merging to
+master.
 
 ```shell
 # Make sure commit to upstream/master is present in local repo.
@@ -83,16 +89,20 @@ branch.
 
 ### Maintaining LTS branches
 
-Releases that are under Long Term Support (LTS) are listed on [angular.io](https://angular.io/guide/releases#support-policy-and-schedule).
+Releases that are under Long Term Support (LTS) are listed on
+[angular.io](https://angular.io/guide/releases#support-policy-and-schedule).
 
-Since there could be more than one LTS branch at any one time, PR authors who want to
-merge commits into LTS branches must open a pull request against the specific base branch they'd like to target.
+Since there could be more than one LTS branch at any one time, PR authors who
+want to merge commits into LTS branches must open a pull request against the
+specific base branch they'd like to target.
 
-In general, cherry picks for LTS should only be done if it meets one of the criteria below:
+In general, cherry picks for LTS should only be done if it meets one of the
+criteria below:
 
 1. It addresses a critical security vulnerability.
 2. It fixes a breaking change in the external environment.  
-   For example, this could happen if one of the dependencies is deleted from NPM.
+   For example, this could happen if one of the dependencies is deleted from
+   NPM.
 3. It fixes a legitimate failure on CI for a particular LTS branch.
 
 # Release
@@ -101,13 +111,17 @@ In general, cherry picks for LTS should only be done if it meets one of the crit
 
 Make sure the CI is green.
 
-Consider if you need to update [`packages/schematics/angular/utility/latest-versions.ts`](https://github.com/angular/angular-cli/blob/master/packages/schematics/angular/utility/latest-versions.ts) to reflect changes in dependent versions.
+Consider if you need to update
+[`packages/schematics/angular/utility/latest-versions.ts`](https://github.com/angular/angular-cli/blob/master/packages/schematics/angular/utility/latest-versions.ts)
+to reflect changes in dependent versions.
 
 ## Shepparding
 
-As commits are cherry-picked when PRs are merged, creating the release should be a matter of creating a tag.
+As commits are cherry-picked when PRs are merged, creating the release should be
+a matter of creating a tag.
 
-**Make sure you update the package versions in `packages/schematics/angular/utility/latest-versions.ts`.**
+**Make sure you update the package versions in
+`packages/schematics/angular/utility/latest-versions.ts`.**
 
 ```bash
 git commit -a -m 'release: vXX'
@@ -123,31 +137,36 @@ git push upstream && git push upstream --tags
 **This can ONLY be done by a Google employee.**
 
 Log in to the Wombat publishing service using your own github and google.com
-account to publish.  This enforces the loging is done using 2Factor auth.
+account to publish. This enforces the loging is done using 2Factor auth.
 
 Run `npm login --registry https://wombat-dressing-room.appspot.com`:
 
-1. In the new browser tab, the registry app will ask you to connect with GitHub to create a token
+1. In the new browser tab, the registry app will ask you to connect with GitHub
+   to create a token
 1. After connecting with github, you will be redirected to create a token
 1. Upon redirect, an auth token is added to your ~/.npmrc for the proxy
 
 After closing the tab, you have successfully logged in, it is time to publish.
 
-**NOTE: After publishing, remove the token added to your `~/.npmrc` file to logout.**
+**NOTE: After publishing, remove the token added to your `~/.npmrc` file to
+logout.**
 
 ### Publishing
 
 **This can ONLY be done by a Google employee.**
 
-**It is a good idea to wait for CI to be green on the patch branch and tag before doing the release.**
+**It is a good idea to wait for CI to be green on the patch branch and tag
+before doing the release.**
 
 Check out the patch branch (e.g. `9.1.x`), then run:
+
 ```bash
 yarn # Reload dependencies
 yarn admin publish
 ```
 
 If also publishing a prerelease, check out `master`, then run:
+
 ```bash
 yarn # Reload dependencies
 yarn admin publish --tag next
@@ -155,8 +174,8 @@ yarn admin publish --tag next
 
 ### Release Notes
 
-`yarn run -s admin changelog` takes `from` and `to` arguments which are any valid git
-ref.
+`yarn run -s admin changelog` takes `from` and `to` arguments which are any
+valid git ref.
 
 For example, running the following command will output the release notes on
 stdout between v1.2.3 and 1.2.4:
@@ -166,8 +185,9 @@ yarn run -s admin changelog --from=v1.2.3 --to=v1.2.4
 ```
 
 Copy the output (you can use `| pbcopy` on MacOS or `| xclip` on Linux) and
-paste the release notes on [GitHub](https://github.com/angular/angular-cli/releases)
-for the tag just released.
+paste the release notes on
+[GitHub](https://github.com/angular/angular-cli/releases) for the tag just
+released.
 
 If you have an API token for GitHub you can create a draft automatically by
 using the `--githubToken` flag. You just then have to confirm the draft.
@@ -181,7 +201,8 @@ is a one-page static page.
 
 > **This can ONLY be done by a Google employee.**
 >
-> **You will need firebase access to our cli-angular-io firebase site. If you don't have it, escalate.**
+> **You will need firebase access to our cli-angular-io firebase site. If you
+> don't have it, escalate.**
 
 Check out if changes were made to the microsite:
 
@@ -197,4 +218,5 @@ directory and run `firebase deploy`. You might have to `firebase login` first.
 If you don't have the firebase CLI installed, you can install it using
 `npm install --global firebase-tools` (or use your package manager of choice).
 
-This is detailed in [`etc/cli.angular.io/README.md`](https://github.com/angular/angular-cli/blob/master/etc/cli.angular.io/README.md).
+This is detailed in
+[`etc/cli.angular.io/README.md`](https://github.com/angular/angular-cli/blob/master/etc/cli.angular.io/README.md).
