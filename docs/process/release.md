@@ -100,7 +100,7 @@ In general, cherry picks for LTS should only be done if it meets one of the
 criteria below:
 
 1. It addresses a critical security vulnerability.
-2. It fixes a breaking change in the external environment.  
+2. It fixes a breaking change in the external environment.
    For example, this could happen if one of the dependencies is deleted from
    NPM.
 3. It fixes a legitimate failure on CI for a particular LTS branch.
